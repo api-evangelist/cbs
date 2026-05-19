@@ -28,6 +28,10 @@ description: >-
   operations teams.
 apis: []
 common:
+  - type: GitHubOrganization
+    url: https://github.com/cbsinteractive
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/paramount-global
   - type: Website
     url: https://www.cbs.com
   - type: CBSNews
