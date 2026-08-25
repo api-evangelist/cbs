@@ -5,10 +5,10 @@
       "source": "https://www.cbsnews.com/latest/rss/main",
       "feed_url": "https://www.cbsnews.com/latest/rss/main",
       "title": "",
-      "saved": 0,
+      "saved": 1,
       "method": "feed"
     }
   ],
-  "fetched": "2026-08-15T12:22:01Z",
-  "post_count": 213
+  "fetched": "2026-08-22T20:20:02Z",
+  "post_count": 243
 }
