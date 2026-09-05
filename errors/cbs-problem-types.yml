@@ -1,0 +1,98 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  live anonymous requests to https://api.cbssports.com/fantasy on 2026-09-05. There is no
+  OpenAPI to derive from and CBS publishes no error reference, so every entry below is a
+  response body actually observed, quoted verbatim.
+format: bespoke
+format_note: >-
+  Not RFC 9457. Two different shapes coexist on the same API. Client errors (4xx) come back
+  as a bare text/plain sentence with no code, no type URI and no envelope. Server errors and
+  successes come back as a JSON (or XML, by default) envelope
+  {statusCode, statusMessage, uri, uriAlias, body}, where body on an error is
+  {type, msg}. An agent cannot branch on a machine-readable field for a 4xx because there
+  isn't one — it has to string-match English prose.
+envelope:
+  success_and_5xx:
+    content_type: application/json
+    fields: [statusCode, statusMessage, uri, uriAlias, body]
+    error_body_fields: [type, msg]
+    example: '{"body":{"type":"internal_server_error","msg":"Internal Server Error"},"uriAlias":"/league/rules","uri":"/league/rules","statusCode":500,"statusMessage":null}'
+  client_errors:
+    content_type: text/plain
+    fields: []
+    note: bare English sentence, no structure
+problems:
+- status: 400
+  title: Missing league_id
+  body: 'Missing league_id'
+  content_type: text/plain
+  meaning: >-
+    A league-scoped resource was called without the league_id parameter. Observed on
+    /fantasy/league/details, /fantasy/league/teams, /fantasy/league/schedules,
+    /fantasy/league/rosters, /fantasy/league/scoring/categories,
+    /fantasy/league/scoring/live and /fantasy/league/draft/results.
+  remediation: supply league_id, and an access_token for a league the caller belongs to
+  observed: 'GET https://api.cbssports.com/fantasy/league/details?version=3.0&response_format=json'
+- status: 400
+  title: Invalid Sport zone
+  body: 'Invalid Sport zone'
+  content_type: text/plain
+  meaning: >-
+    A player-scoped resource was called without the sport parameter. Observed on
+    /fantasy/players/list, /fantasy/players/updates, /fantasy/players/search and
+    /fantasy/players/rankings.
+  remediation: 'supply sport=<id> using an id from GET /fantasy/sports (baseball, football, hockey, basketball, collegefb)'
+  observed: 'GET https://api.cbssports.com/fantasy/players/list?version=3.0&response_format=json'
+- status: 400
+  title: Invalid version for resource
+  body: 'Invalid version 1.0 for resource'
+  content_type: text/plain
+  meaning: the version query parameter names a contract version this resource does not implement
+  remediation: use version=3.0
+  observed: 'GET https://api.cbssports.com/fantasy/sports?version=1.0&response_format=json'
+- status: 404
+  title: sport not found
+  body: 'sport not found'
+  content_type: text/plain
+  meaning: >-
+    the sport parameter was supplied but is not a known sport id. Note the API keys on the
+    fantasy sport id (football), not on the pro league abbreviation (nfl), which returns this.
+  remediation: 'use a sport id from GET /fantasy/sports, not the pro_abbrev value'
+  observed: 'GET https://api.cbssports.com/fantasy/players/list?version=3.0&response_format=json&sport=nfl'
+- status: 404
+  title: league not found
+  body: 'league not found'
+  content_type: text/plain
+  meaning: the resource requires a league context the anonymous caller does not have
+  observed: 'GET https://api.cbssports.com/fantasy/players/updates?version=3.0&response_format=json&sport=football'
+- status: 404
+  title: Not Found (origin)
+  content_type: text/html
+  meaning: >-
+    the path is not routed at all — an Apache default 404 page, not an API response.
+    This is how the API distinguishes "no such resource" from "resource exists, bad input":
+    a routed resource answers text/plain, an unrouted path answers HTML.
+  observed: 'GET https://api.cbssports.com/fantasy/scoreboard?version=3.0&response_format=json'
+- status: 406
+  title: not allowed
+  body: 'not allowed'
+  content_type: null
+  meaning: returned by the Varnish edge for a request to the API host root
+  observed: 'GET https://api.cbssports.com/'
+- status: 500
+  title: Internal Server Error
+  type: internal_server_error
+  content_type: application/json
+  meaning: >-
+    returned by /fantasy/league/rules, /fantasy/stats and by /fantasy/league/details when a
+    league_id is supplied that the caller is not authorised for. statusMessage is null on
+    this path, so the only machine-readable discriminator is body.type.
+  observed: 'GET https://api.cbssports.com/fantasy/league/rules?version=3.0&response_format=json'
+coverage:
+  problem_count: 8
+  source: probed
+  note: >-
+    This is not a complete catalogue — it is every distinct error shape observed across the
+    requests made during this pass. api.cbssports.com serves `Disallow: /` in robots.txt, so
+    the surface was not enumerated further.

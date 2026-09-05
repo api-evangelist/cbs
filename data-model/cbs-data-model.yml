@@ -1,0 +1,82 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  derived from the JSON actually returned by
+  https://api.cbssports.com/fantasy/sports and
+  https://api.cbssports.com/fantasy/players/list?sport=football on 2026-09-05. There is
+  no OpenAPI, no JSON Schema and no object reference to derive from, so every field below
+  was observed in a real response body; nothing is inferred from documentation.
+scope_note: >-
+  This is a partial model. It covers the two resources that answer anonymously. The
+  league, team, roster, draft and transaction entities are real — they are named by the
+  API's own 400 responses ("Missing league_id" on /league/details, /league/teams,
+  /league/schedules, /league/rosters, /league/scoring/categories, /league/scoring/live,
+  /league/draft/results) — but their field shapes cannot be observed without a league
+  access token and are therefore recorded as entities with unknown attributes rather than
+  invented.
+entities:
+- name: Sport
+  resource: GET /fantasy/sports
+  observed_count: 5
+  key: id
+  attributes:
+  - {field: id, type: string, note: 'fantasy sport id — baseball, football, hockey, basketball, collegefb'}
+  - {field: name, type: string}
+  - {field: pro_abbrev, type: string, note: 'pro league abbreviation — MLB, NFL, NHL, NBA, NCAAF. NOT accepted as the sport parameter; passing nfl returns 404 "sport not found"'}
+- name: Player
+  resource: 'GET /fantasy/players/list?sport={Sport.id}'
+  observed_count: 4905
+  key: id
+  attributes:
+  - {field: id, type: string, note: CBS Sports player id}
+  - {field: elias_id, type: string, note: 'Elias Sports Bureau identifier — a cross-vendor key, the one field here that joins to data outside CBS'}
+  - {field: firstname, type: string}
+  - {field: lastname, type: string}
+  - {field: fullname, type: string}
+  - {field: position, type: string}
+  - {field: eligible_positions_display, type: string, note: 'positions the player may be slotted at, including the synthetic DST and TQB team entries'}
+  - {field: eligible_for_offense_and_defense, type: integer, note: 0/1 flag}
+  - {field: pro_team, type: string, note: pro team abbreviation}
+  - {field: pro_status, type: string, note: 'roster status code, e.g. A; null on team entries'}
+  - {field: bye_week, type: string}
+  - {field: age, type: string}
+  - {field: jersey, type: string}
+  - {field: photo, type: string, note: 'absolute URL on sports.cbsimg.net, served over http:// not https://'}
+  - {field: icons, type: array}
+- name: League
+  resource: GET /fantasy/league/details
+  attributes: []
+  note: >-
+    Exists and is addressable — the resource answers 400 "Missing league_id" — but is
+    gated behind a league access token, so no attributes were observed. Not modelled.
+- name: Team
+  resource: GET /fantasy/league/teams
+  attributes: []
+  note: gated behind a league access token; entity confirmed by the 400 response, shape unobserved
+- name: Roster
+  resource: GET /fantasy/league/rosters
+  attributes: []
+  note: gated behind a league access token; entity confirmed by the 400 response, shape unobserved
+- name: DraftResult
+  resource: GET /fantasy/league/draft/results
+  attributes: []
+  note: gated behind a league access token; entity confirmed by the 400 response, shape unobserved
+- name: ScoringCategory
+  resource: GET /fantasy/league/scoring/categories
+  attributes: []
+  note: gated behind a league access token; entity confirmed by the 400 response, shape unobserved
+relationships:
+- {from: Player, to: Sport, kind: belongs_to, via: 'sport query parameter (not a field on the player object)'}
+- {from: Roster, to: Team, kind: belongs_to, via: league_id, confidence: low, note: inferred from resource nesting, not observed}
+- {from: Team, to: League, kind: belongs_to, via: league_id, confidence: low, note: inferred from resource nesting, not observed}
+- {from: ScoringCategory, to: League, kind: belongs_to, via: league_id, confidence: low, note: inferred from resource nesting, not observed}
+observations:
+- >-
+  There is no id prefix scheme. Player ids are bare numeric strings, so an id carries no
+  type information and an agent cannot tell a player id from a league id by inspection.
+- >-
+  elias_id is the only external identifier in the model. Everything else is CBS-local.
+- >-
+  /players/list returns all 4,905 football entries in a single unpaginated response,
+  including synthetic team-defence (DST) and team-quarterback (TQB) rows with empty
+  firstname and the club name in lastname.

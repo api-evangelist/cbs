@@ -1,0 +1,29 @@
+generated: '2026-09-05'
+method: searched
+status: none
+source: >-
+  searched the MCP server registries, npm (@modelcontextprotocol and vendor scopes), the
+  github.com/cbsinteractive organisation and every live CBS and Paramount page on
+  2026-09-05; probed /.well-known/ai-plugin.json on all nine hosts in the record
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+server: null
+tools: []
+note: >-
+  CBS and Paramount ship no MCP server — no hosted endpoint, no stdio package, no listing
+  in any registry. No candidate tool list is derived here either: the pipeline derives
+  candidates from an OpenAPI, and CBS publishes none, so a tool list would have to be
+  invented from probe responses and would read as a surface that does not exist. The
+  posture is the opposite of an MCP one — https://api.cbssports.com/robots.txt serves
+  `User-agent: * / Disallow: /` and https://www.cbssports.com/robots.txt disallows GPTBot
+  outright. Recorded as a genuine absence; no MCPServer pointer is wired in apis.yml,
+  because that pointer asserts a server the provider serves.
+evidence:
+- {url: 'https://api.cbssports.com/.well-known/ai-plugin.json', status: 404}
+- {url: 'https://www.cbs.com/.well-known/ai-plugin.json', status: 404}
+- {url: 'https://api.cbssports.com/robots.txt', status: 200}

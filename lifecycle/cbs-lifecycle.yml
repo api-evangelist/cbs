@@ -1,0 +1,54 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  live probes of api.cbssports.com and developer.cbssports.com plus the provider's own
+  2012 announcement, 2026-09-05
+versioning:
+  scheme: query-parameter
+  parameter: version
+  current: '3.0'
+  docs: null
+  evidence: >-
+    GET https://api.cbssports.com/fantasy/sports?version=1.0 returns 400
+    "Invalid version 1.0 for resource"; version=3.0 returns 200
+deprecation:
+  policy_url: null
+  sunset_header: false
+  status: >-
+    The developer PROGRAM is retired; the API is not. developer.cbssports.com — the
+    Fantasy Platform Development Center announced in January 2012 and the only place the
+    reference, the key request form and the terms ever lived — no longer resolves
+    (NXDOMAIN, checked 2026-09-05; last Wayback capture 2020-08-07). The API host itself
+    still answers: GET /fantasy/sports returned HTTP 200 on 2026-09-05. No Deprecation or
+    Sunset header is returned on any response, no end-of-life date is published anywhere,
+    and no migration path or successor API is named.
+  evidence:
+  - url: https://developer.cbssports.com/
+    status: 0
+    note: DNS NXDOMAIN
+  - url: http://web.archive.org/web/20200807214908/http://developer.cbssports.com/
+    status: 200
+    note: archive capture, not a live provider page — not wired as a pointer
+  - url: https://api.cbssports.com/fantasy/sports?version=3.0&response_format=json
+    status: 200
+sla:
+  url: null
+  uptime_target: null
+status_page:
+  url: null
+  evidence:
+  - url: https://status.cbs.com/
+    status: 0
+  - url: https://status.paramountplus.com/
+    status: 0
+  note: >-
+    No status page exists on any CBS or Paramount host probed. Paramount+ outage
+    communication runs through the help centre and social channels, not a machine-readable
+    status surface.
+changelog:
+  url: null
+  note: no dated API changelog or release-notes page published
+deprecated_operations: []
+support:
+  url: https://help.cbs.com/s/
+  note: consumer help centre; there is no developer support channel

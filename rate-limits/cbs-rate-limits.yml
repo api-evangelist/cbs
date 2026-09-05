@@ -1,0 +1,28 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  live anonymous requests to https://api.cbssports.com/fantasy on 2026-09-05, plus a
+  search of every live CBS and Paramount page for a published limit
+limit_count: 0
+rate_limits: []
+response_headers:
+  observed: []
+  note: >-
+    No X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, RateLimit-*, or
+    Retry-After header was returned on any 200, 400, 404, 406 or 500 response. The only
+    edge headers present are Fastly/Varnish cache metadata (x-served-by, x-cache,
+    x-cache-hits, x-timer) and a Signal Sciences WAF backend marker.
+exhaustion_status: null
+note: >-
+  CBS publishes no rate limits for either surface. The Fantasy API's limits, if any, were
+  stated on developer.cbssports.com, which no longer resolves. An agent calling this API
+  has no runtime signal at all: it cannot see how much budget it has, cannot see when a
+  window resets, and would learn it had been throttled only from a WAF block. Recorded as
+  an honest zero, not as an absence of checking. Separately, https://api.cbssports.com/robots.txt
+  serves `User-agent: * / Disallow: /`, which is the closest thing to a stated automated-access
+  policy CBS publishes for the host — a blanket refusal rather than a quota.
+evidence:
+- url: https://api.cbssports.com/fantasy/sports?version=3.0&response_format=json
+  status: 200
+- url: https://api.cbssports.com/robots.txt
+  status: 200

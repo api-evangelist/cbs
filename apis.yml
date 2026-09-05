@@ -12,18 +12,22 @@ tags:
   - Paramount
   - Streaming
   - Television
+  - Fantasy Sports
+  - Syndication
+  - RSS
   - Fortune 500
 kind: contract
 deliveryModel:
   model: saas
   open_source: false
   commercial: true
-  callable_host: false
+  callable_host: true
   label: Hosted service · you call their endpoint
   confidence: medium
   source:
   - pricing
-  generated: '2026-08-28'
+  - probe
+  generated: '2026-09-05'
   method: derived
 accessModel:
   pricing: unknown
@@ -39,20 +43,107 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cbs.png
 access: 3rd-Party
 created: '2026-03-23'
-modified: '2026-04-23'
-position: Consuming
+modified: '2026-09-05'
+position: Producing
 description: >-
-  CBS is the flagship broadcast television network of Paramount Global
-  (NASDAQ: PARA, PARAA). It encompasses CBS Entertainment, CBS News, CBS
-  Sports, CBS Stations (owned and operated), and feeds Paramount+ streaming
-  service. CBS does not publish a consumer developer portal. Partner,
-  syndication, advertising, and distribution APIs are operated privately
-  through Paramount Global's business development, ad sales, and affiliate
-  operations teams.
-apis: []
+  CBS is the flagship broadcast television network of Paramount (Paramount Skydance
+  Corporation, formerly Paramount Global), covering CBS Entertainment, CBS News, CBS
+  Sports and the CBS owned-and-operated stations, and feeding Paramount+. CBS publishes
+  no developer portal and no OpenAPI, AsyncAPI or GraphQL contract. Two first-party
+  machine-readable surfaces are nonetheless live and anonymously reachable and are
+  catalogued here: the legacy CBS Sports Fantasy REST API at api.cbssports.com/fantasy
+  (v3.0, opened to third-party developers in 2012 and still returning HTTP 200 in
+  September 2026, though its portal at developer.cbssports.com is now NXDOMAIN and its
+  host serves Disallow to every robot), and the CBS News RSS feeds at
+  cbsnews.com/latest/rss. Partner, syndication, advertising (EyeQ / Conduit) and
+  distribution APIs stay private with no public contract.
+apis:
+- aid: cbs:cbs-sports-fantasy-api
+  name: CBS Sports Fantasy API
+  description: >-
+    The CBS Sports Fantasy Platform REST API, version 3.0. Opened to third-party
+    developers in January 2012 so apps could read league, team, player, draft,
+    transaction and scoring data out of CBS Sports fantasy games. The developer
+    program has been retired — developer.cbssports.com no longer resolves and no
+    machine-readable contract is published anywhere — but the API host is still live:
+    GET /fantasy/sports returns HTTP 200 with a JSON or XML envelope anonymously.
+    League-scoped resources require an access token issued to a member of at least one
+    league. Responses carry a statusCode / statusMessage / uri / uriAlias envelope;
+    the version and response_format query parameters select the contract version
+    (3.0) and JSON vs XML. api.cbssports.com/robots.txt serves `Disallow: /` to all
+    user agents.
+  humanURL: https://www.cbssports.com/fantasy/
+  baseURL: https://api.cbssports.com/fantasy
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cbs.png
+  tags:
+  - Fantasy Sports
+  - Sports
+  - CBS Sports
+  - Leagues
+  - Players
+  - Statistics
+  properties:
+  - type: ErrorCatalog
+    url: errors/cbs-problem-types.yml
+  - type: Conventions
+    url: conventions/cbs-conventions.yml
+  - type: DataModel
+    url: data-model/cbs-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/cbs-lifecycle.yml
+  - type: RateLimits
+    url: rate-limits/cbs-rate-limits.yml
+  - type: Website
+    url: https://www.cbssports.com/fantasy/
+- aid: cbs:cbs-news-rss-feeds
+  name: CBS News RSS Feeds
+  description: >-
+    CBS News publishes a family of public RSS 2.0 feeds covering top stories and each
+    editorial section (US, world, politics, technology, entertainment, health,
+    moneywatch, science, space and the network's video and podcast output). The feed
+    index at cbsnews.com/rss/ lists them. Each feed is a plain, unauthenticated
+    HTTP GET returning RSS 2.0 XML with content, dc, media and CBS-namespaced
+    extensions. It is the only documented, indexed, machine-readable content surface
+    CBS News offers; there is no JSON content API, no OpenAPI and no key.
+  humanURL: https://www.cbsnews.com/rss/
+  baseURL: https://www.cbsnews.com/latest/rss
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cbs.png
+  tags:
+  - RSS
+  - News
+  - Syndication
+  - Content
+  - CBS News
+  properties:
+  - type: Documentation
+    url: https://www.cbsnews.com/rss/
+  - type: Blog
+    url: https://www.cbsnews.com/latest/rss/main
 common:
   - type: DomainSecurity
     url: security/cbs-domain-security.yml
+  - type: WellKnown
+    url: well-known/cbs-well-known.yml
+  - type: Authentication
+    url: authentication/cbs-authentication.yml
+  - type: Conformance
+    url: conformance/cbs-conformance.yml
+  - type: Conventions
+    url: conventions/cbs-conventions.yml
+  - type: ErrorCatalog
+    url: errors/cbs-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/cbs-lifecycle.yml
+  - type: DataModel
+    url: data-model/cbs-data-model.yml
+  - type: Packages
+    url: packages/cbs-packages.yml
+  - type: Plans
+    url: plans/cbs-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/cbs-rate-limits.yml
+  - type: LLMsTxt
+    url: llms/cbs-llms.txt
   - type: GitHubOrganization
     url: https://github.com/cbsinteractive
   - type: LinkedIn
@@ -74,25 +165,30 @@ common:
   - type: InvestorRelations
     url: https://ir.paramount.com/
   - type: PressReleases
-    url: https://ir.paramount.com/news-events/press-releases
+    url: https://ir.paramount.com/press-releases
   - type: Support
     url: https://help.cbs.com/s/
+  - type: SignUp
+    url: https://www.cbs.com/account/signup/createaccount/
+  - type: Login
+    url: https://www.cbs.com/account/signin/
   - type: TermsOfService
     url: https://www.viacomcbs.legal/us/en/cbsi/terms-of-use
     description: Paramount / CBS Interactive Terms of Use
   - type: PrivacyPolicy
-    url: https://privacy.paramount.com/policy
+    url: https://privacy.paramount.com/en/policy
   - type: CookiePolicy
     url: https://privacy.paramount.com/cookies
   - type: Accessibility
-    url: https://www.cbs.com/ces-accessibility/
-  - type: CCPA
-    url: https://privacy.paramount.com/en/california-rights
-  - type: Advertising
-    url: https://www.paramountadvertising.com/
+    url: https://www.cbs.com/closed-captioning/
   - url: https://www.cbsnews.com/latest/rss/main
     type: Blog
 maintainers:
   - FN: API Evangelist
     email: info@apievangelist.com
 specificationVersion: '0.23'
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v3

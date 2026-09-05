@@ -1,0 +1,184 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry metadata from proxy.golang.org, registry.npmjs.org, pypi.org and rubygems.org,
+  plus the github.com/cbsinteractive organisation listing, queried 2026-09-05
+summary:
+  first_party_count: 12
+  first_party_api_clients: 0
+  third_party_count: 2
+  note: >-
+    CBS ships no client SDK for either of its API surfaces. Every first-party package
+    below is media-engineering tooling from CBS Interactive's MediaCore group — HLS/DASH
+    packaging, SCTE-35 parsing, manifest generation, token signing — published as Go
+    modules. They are genuinely first-party and genuinely useful, but none of them calls a
+    CBS API, which is why this repository carries a Packages pointer and deliberately no
+    SDKs pointer: awarding an SDK count here would credit CBS with a developer-onboarding
+    surface it does not have.
+packages:
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/m3u8
+  url: https://pkg.go.dev/github.com/cbsinteractive/m3u8
+  install: go get github.com/cbsinteractive/m3u8
+  official: true
+  api_client: false
+  version: v0.11.10
+  published: '2026-04-08'
+  description: Parser and generator of M3U8 playlists for Apple HLS
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-minfo
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-minfo
+  install: go get github.com/cbsinteractive/mc-minfo
+  official: true
+  api_client: false
+  version: v0.3.1
+  published: '2026-03-24'
+  description: Minimal mediainfo wrapper
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-log
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-log
+  install: go get github.com/cbsinteractive/mc-log
+  official: true
+  api_client: false
+  version: v0.1.5
+  published: '2025-11-12'
+  description: Structured logging package
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-uuid
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-uuid
+  install: go get github.com/cbsinteractive/mc-uuid
+  official: true
+  api_client: false
+  version: v0.1.1
+  published: '2025-07-23'
+  description: Fast UUID v4 generator
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-bitmovin-api-sdk-go
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-bitmovin-api-sdk-go
+  install: go get github.com/cbsinteractive/mc-bitmovin-api-sdk-go
+  official: true
+  api_client: false
+  version: v1.30.101
+  published: '2025-07-22'
+  description: >-
+    CBS Interactive's maintained fork of the Bitmovin API Go SDK. It is a client for
+    Bitmovin's API, not for a CBS API — recorded here because CBS publishes and versions
+    it, not as a CBS SDK.
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-hls
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-hls
+  install: go get github.com/cbsinteractive/mc-hls
+  official: true
+  api_client: false
+  version: v0.5.1
+  published: '2025-07-07'
+  description: HLS parser
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-signer
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-signer
+  install: go get github.com/cbsinteractive/mc-signer
+  official: true
+  api_client: false
+  version: v1.0.0
+  published: '2025-07-03'
+  description: Base64-encoded token system using xchacha20poly1305 (Branca-style)
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-json
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-json
+  install: go get github.com/cbsinteractive/mc-json
+  official: true
+  api_client: false
+  version: v0.1.161
+  published: '2025-07-03'
+  description: Fork of encoding/json fixing omitempty behaviour on structs
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-ccp
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-ccp
+  install: go get github.com/cbsinteractive/mc-ccp
+  official: true
+  api_client: false
+  version: v0.6.4
+  published: '2025-07-02'
+  description: Cloud copy across local storage, S3, GCS and http/https
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/mc-scte
+  url: https://pkg.go.dev/github.com/cbsinteractive/mc-scte
+  install: go get github.com/cbsinteractive/mc-scte
+  official: true
+  api_client: false
+  version: v0.0.2
+  published: '2025-02-11'
+  description: SCTE-35 bitstream parser for splice_info sections, commands and descriptors
+- language: go
+  registry: go
+  name: github.com/cbsinteractive/go-dash
+  url: https://pkg.go.dev/github.com/cbsinteractive/go-dash
+  install: go get github.com/cbsinteractive/go-dash
+  official: true
+  api_client: false
+  version: v0.0.0-20201029221343-7b7c37dd34ec
+  published: '2020-10-29'
+  description: >-
+    Go library for generating MPEG-DASH manifests. Untagged and unreleased for nearly six
+    years — pseudo-version only.
+- language: javascript
+  registry: npm
+  name: propeller-client
+  url: https://www.npmjs.com/package/propeller-client
+  install: npm install propeller-client
+  official: true
+  api_client: true
+  version: 1.3.4
+  published: '2020-07-07'
+  description: >-
+    Node client for Propeller, CBS Interactive's internal video packaging service. The
+    only first-party CBS package that is an API client of any kind — and it is orphaned:
+    its declared repository github.com/cbsinteractive/propeller-client returns 404, the
+    Propeller API itself is not public, and nothing has been published in over six years.
+    Not counted as an SDK for a public CBS API because there is no public Propeller API.
+third_party:
+- language: python
+  registry: pypi
+  name: cbs-sports-api
+  url: https://pypi.org/project/cbs-sports-api/
+  install: pip install cbs-sports-api
+  official: false
+  api_client: true
+  version: 0.2.3
+  published: '2025-11-30'
+  description: >-
+    Community client for the CBS Sports Fantasy API by John Diebold. Notable as the
+    freshest evidence that the API this repository catalogues is still in real use: it was
+    published sixteen months after CBS's own developer portal stopped resolving.
+- language: ruby
+  registry: rubygems
+  name: cbs_fantasy_sports_api_token_fetcher
+  url: https://rubygems.org/gems/cbs_fantasy_sports_api_token_fetcher
+  install: gem install cbs_fantasy_sports_api_token_fetcher
+  official: false
+  api_client: true
+  version: 0.1.0
+  published: '2017-03-29'
+  description: >-
+    Community gem that retrieves a CBS fantasy sports API token by logging in as a league
+    member — the workaround the community built because CBS never shipped a self-serve key
+    flow.
+registries_checked:
+- {registry: go, endpoint: 'https://proxy.golang.org/<module>/@latest', result: 14 CBS Interactive modules resolved}
+- {registry: npm, endpoint: 'https://registry.npmjs.org/-/v1/search?text=cbsinteractive', result: 3 matches, 1 first-party}
+- {registry: pypi, endpoint: 'https://pypi.org/pypi/<pkg>/json', result: no first-party CBS package}
+- {registry: rubygems, endpoint: 'https://rubygems.org/api/v1/gems/<pkg>.json', result: no first-party CBS gem}
+- {registry: maven, result: no first-party CBS artifact found}
+- {registry: nuget, result: no first-party CBS package found}
+- {registry: packagist, result: no first-party CBS package found}
+- {registry: crates.io, result: 'no first-party CBS crate found; the two Rust repos in the org (gst-plugin-rs, leptess) are archived forks and were never published under a CBS name'}

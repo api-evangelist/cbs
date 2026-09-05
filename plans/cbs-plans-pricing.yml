@@ -1,0 +1,23 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  searched every live CBS and Paramount property for an API pricing, plans or developer
+  commercial page on 2026-09-05
+plan_count: 0
+plans: []
+note: >-
+  Neither CBS API surface is a commercial product and neither has a price. The CBS Sports
+  Fantasy API was free and access-gated on league membership rather than payment, and the
+  page that described that gate (developer.cbssports.com) no longer resolves. The CBS News
+  RSS feeds are free and unauthenticated. Paramount's monetised API-adjacent surfaces —
+  the EyeQ ad platform and its Conduit programmatic integration layer — are sold through
+  ad sales and carry no public rate card or self-serve plan. Paramount+ subscription tiers
+  are a consumer streaming price list, not API plans, and are deliberately not recorded
+  here. This is a genuine zero, not an unchecked field.
+evidence:
+- url: https://developer.cbssports.com/
+  status: 0
+- url: https://www.cbssports.com/fantasy/
+  status: 200
+- url: https://www.cbsnews.com/rss/
+  status: 200

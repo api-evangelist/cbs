@@ -1,0 +1,119 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  live anonymous requests to https://api.cbssports.com/fantasy and
+  https://www.cbsnews.com/latest/rss/ on 2026-09-05. CBS publishes no conventions,
+  reference or OpenAPI, so nothing here is derived from a document — it is observed
+  behaviour, and where a convention could not be observed it is recorded as unknown
+  rather than guessed.
+surfaces:
+- api: CBS Sports Fantasy API
+  base: https://api.cbssports.com/fantasy
+- api: CBS News RSS Feeds
+  base: https://www.cbsnews.com/latest/rss
+authentication:
+  style: query-parameter access token
+  detail: >-
+    Reference resources (/sports, /players/list) answer anonymously. League-scoped
+    resources need an access token CBS issues only to a member of a CBS Sports fantasy
+    league. No header scheme, no OAuth, no self-serve key page. See
+    authentication/cbs-authentication.yml.
+  documented: false
+versioning:
+  style: query parameter
+  parameter: version
+  current: '3.0'
+  evidence: 'version=1.0 returns 400 "Invalid version 1.0 for resource"; version=3.0 returns 200'
+  default: >-
+    omitting version still returns 200 on /sports, so the parameter is validated but not
+    strictly required on every resource
+content_negotiation:
+  style: query parameter, not Accept header
+  parameter: response_format
+  values: [json, xml]
+  default: xml
+  evidence: >-
+    GET /fantasy/sports with no response_format returns
+    '<?xml version="1.0"?><result uriAlias="/sports" ...>'; response_format=json returns the
+    same document as JSON. The Accept header is ignored.
+  note: >-
+    XML-by-default is the single most agent-hostile convention on this API — a client that
+    sends Accept: application/json and reads the body as JSON gets XML and fails.
+response_envelope:
+  fields: [statusCode, statusMessage, uri, uriAlias, body]
+  detail: >-
+    Payload always sits under body. uri and uriAlias echo the resource path. statusCode
+    duplicates the HTTP status on 200 and 500 and is absent from 4xx, which are plain text.
+  example: '{"body":{"sports":[{"id":"baseball","pro_abbrev":"MLB","name":"Baseball"}]},"statusMessage":"OK","statusCode":200,"uri":"/sports","uriAlias":"/sports"}'
+error_envelope:
+  detail: see errors/cbs-problem-types.yml — 4xx is bare text/plain, 5xx is the JSON envelope with body.type
+pagination:
+  style: none observed
+  detail: >-
+    GET /fantasy/players/list?sport=football returns the entire player list in one
+    unpaginated response. No limit, offset, page, cursor or next-link field was observed and
+    no Link header is returned.
+  documented: false
+field_expansion:
+  supported: unknown
+  detail: no expand/fields/include parameter documented or observed
+metadata:
+  supported: false
+request_tracing:
+  header: null
+  detail: >-
+    No request-id or correlation header is returned. Responses carry Fastly/Varnish cache
+    headers (x-served-by, x-cache, x-timer) and a sigsci backend marker, which identify the
+    edge node, not the request.
+rate_limit_signaling:
+  headers: []
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header observed on any response. See
+    rate-limits/cbs-rate-limits.yml.
+cors:
+  access_control_allow_methods: [GET, OPTIONS, HEAD, PUT, POST, DELETE, PATCH]
+  access_control_allow_headers: '*'
+  access_control_allow_credentials: true
+  note: >-
+    The edge advertises the full method set on every response including the 406 at the API
+    root. This is a blanket CORS policy, not a statement that every method is implemented on
+    every resource.
+idempotency:
+  coverage: none
+  supported: false
+  header: null
+  detail: >-
+    No idempotency key mechanism is documented or observed. The developer reference that
+    would have stated one (developer.cbssports.com) no longer resolves. The write surface
+    of this API — fantasy roster add/drop and transaction operations — is real but is not
+    reachable or documentable anonymously, so this is recorded as none rather than na: a
+    write surface exists and carries no published replay protection.
+reversibility:
+  grade: none
+  documented: false
+  detail: >-
+    No reversal operation, cancellation window or undo path is published for any CBS
+    surface. Fantasy transactions (add, drop, trade) are the write surface a reversal would
+    apply to and CBS states no window for them in any live document.
+  window: null
+  never_assert_note: >-
+    A window is deliberately absent rather than estimated. CBS's league rules pages describe
+    waiver and trade-review periods in product terms for human league managers; those are
+    not an API reversal contract and are not recorded as one.
+dry_run_mode:
+  supported: false
+  detail: no test mode, sandbox, simulation parameter or preview flag published or observed
+agent_posture:
+  robots_txt:
+    api.cbssports.com: 'User-agent: * / Disallow: /'
+    www.cbssports.com: 'User-agent: GPTBot / Disallow: /'
+  llms_txt: absent on every host probed
+  detail: >-
+    The API host disallows every robot outright and the sports web property blocks GPTBot
+    specifically. This is a deliberate posture and is recorded as a finding, not a defect.
+cross_links:
+  errors: errors/cbs-problem-types.yml
+  lifecycle: lifecycle/cbs-lifecycle.yml
+  authentication: authentication/cbs-authentication.yml
+  rate_limits: rate-limits/cbs-rate-limits.yml
+  data_model: data-model/cbs-data-model.yml

@@ -1,0 +1,76 @@
+generated: '2026-09-05'
+method: probed
+source: >-
+  https://help.cbs.com/.well-known/openid-configuration (HTTP 200) plus live anonymous
+  probes of https://api.cbssports.com/fantasy on 2026-09-05. CBS publishes no OpenAPI,
+  so nothing here is derived from a security scheme block — every statement below is an
+  observed response or a fetched discovery document.
+summary:
+  types:
+  - oauth2
+  - openIdConnect
+  - token
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  - implicit
+  spec_derived: false
+  note: >-
+    There is no published authentication reference for either CBS API surface. The only
+    machine-readable auth metadata CBS serves anywhere is the OIDC discovery document on
+    the Salesforce-hosted CBS Help Center, and that governs the help centre, not the
+    Fantasy API.
+schemes:
+- name: CBS Help Center OIDC
+  type: openIdConnect
+  issuer: https://help.cbs.com
+  openIdConnectUrl: https://help.cbs.com/.well-known/openid-configuration
+  sources:
+  - well-known/cbs-openid-configuration.json
+  observed:
+    authorization_endpoint: https://help.cbs.com/services/oauth2/authorize
+    token_endpoint: https://help.cbs.com/services/oauth2/token
+    userinfo_endpoint: https://help.cbs.com/services/oauth2/userinfo
+    revocation_endpoint: https://help.cbs.com/services/oauth2/revoke
+    introspection_endpoint: https://help.cbs.com/services/oauth2/introspect
+    registration_endpoint: https://help.cbs.com/services/oauth2/register
+    jwks_uri: https://help.cbs.com/id/keys
+    response_types_supported: [code, token, token id_token]
+    token_endpoint_auth_methods_supported: [client_secret_post, client_secret_basic, private_key_jwt]
+    id_token_signing_alg_values_supported: [RS256]
+    dpop_signing_alg_values_supported: [RS256, RS384, RS512, ES256, ES384, ES512, EdDSA]
+    scopes_supported_count: 36
+  note: >-
+    This is the stock Salesforce Experience Cloud / Salesforce Identity discovery document
+    served from a CBS-controlled host. The 36 entries in scopes_supported (api, web,
+    openid, refresh_token, offline_access, chatter_api, cdp_*, einstein_gpt_api, mcp_api,
+    …) are Salesforce platform scopes, NOT a CBS product-API scope reference, which is why
+    this repository carries no scopes/ artifact — publishing them as "CBS OAuth scopes"
+    would misdescribe what CBS actually offers.
+- name: CBS Sports Fantasy access token
+  type: token
+  in: query
+  parameter_name: access_token
+  sources:
+  - probe
+  observed:
+    anonymous_reads:
+    - GET https://api.cbssports.com/fantasy/sports?version=3.0&response_format=json -> 200
+    - GET https://api.cbssports.com/fantasy/players/list?version=3.0&response_format=json&sport=football -> 200
+    gated_reads:
+    - GET https://api.cbssports.com/fantasy/league/details?version=3.0&response_format=json -> 400 "Missing league_id"
+    - GET https://api.cbssports.com/fantasy/league/teams?version=3.0&response_format=json -> 400 "Missing league_id"
+  note: >-
+    Reference data (sport list, player list) is served with no credential at all. League-scoped
+    resources require a league_id and an access token that CBS issues only to a member of at
+    least one CBS Sports fantasy league; there is no self-serve key page, no documented header
+    or parameter name in any live CBS document, and no OAuth flow. The parameter name recorded
+    here comes from CBS's own retired developer centre and from third-party clients, not from
+    a live CBS page, and is marked as such.
+  confidence: low
+docs: null
+docs_note: >-
+  The authentication reference lived at http://developer.cbssports.com/documentation/api/ and
+  that host no longer resolves (NXDOMAIN, checked 2026-09-05). The last capture is
+  http://web.archive.org/web/20200807214908/http://developer.cbssports.com/ — an archive, not a
+  live provider page, so it is not wired as a pointer.
