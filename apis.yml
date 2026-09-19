@@ -79,6 +79,13 @@ apis:
   - Fantasy Sports
   - Sports
   - CBS Sports
+  - League
+  - Player
+  - Statistics
+  tags_raw:
+  - Fantasy Sports
+  - Sports
+  - CBS Sports
   - Leagues
   - Players
   - Statistics
