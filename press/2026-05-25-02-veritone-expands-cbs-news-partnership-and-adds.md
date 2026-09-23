@@ -1,7 +1,9 @@
 ---
 title: Veritone Expands CBS News Partnership and Adds ...
 url: https://investors.veritone.com/news-events/press-releases/detail/395/veritone-expands-cbs-news-partnership-and-adds-cbs-media-ventures-iconic-entertainment-programs
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CBS" press release artificial intelligence'
 position: 2
 source: serpapi-google

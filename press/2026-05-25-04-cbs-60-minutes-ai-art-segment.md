@@ -1,7 +1,9 @@
 ---
 title: CBS 60 minutes ai art segment
 url: https://www.facebook.com/groups/698593531630485/posts/1526442915512205/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CBS" press release artificial intelligence'
 position: 4
 source: serpapi-google

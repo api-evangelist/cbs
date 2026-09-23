@@ -1,7 +1,9 @@
 ---
 title: Artificial Intelligence news - Today's latest updates
 url: https://www.cbsnews.com/atlanta/tag/artificial-intelligence/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CBS" press release artificial intelligence'
 position: 5
 source: serpapi-google

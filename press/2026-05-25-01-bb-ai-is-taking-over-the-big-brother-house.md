@@ -1,7 +1,9 @@
 ---
 title: “BB AI” IS TAKING OVER THE “BIG BROTHER” HOUSE ...
 url: https://www.paramountpressexpress.com/cbs-entertainment/shows/big-brother/releases/?view=110010-bb-ai-is-taking-over-the-big-brother-house-this-summer
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CBS" press release artificial intelligence'
 position: 1
 source: serpapi-google

@@ -1,7 +1,9 @@
 ---
 title: AI in Business Initiative | Columbia Business School
 url: https://business.columbia.edu/ai-in-business
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"CBS" press release artificial intelligence'
 position: 3
 source: serpapi-google
